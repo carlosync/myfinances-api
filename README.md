@@ -1,4 +1,4 @@
-# myfinances-api
+# MY Finances-api
 API Rest My Finances - Projeto simples para aprimorar o conhecimento em API Rest com Spring Framework.  
 
 ## Tecnologias usadas
