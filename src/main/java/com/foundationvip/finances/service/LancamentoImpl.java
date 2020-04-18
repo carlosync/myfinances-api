@@ -4,6 +4,7 @@ import com.foundationvip.finances.model.Lancamento;
 import com.foundationvip.finances.model.StatusLancamento;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface LancamentoImpl {
 
@@ -18,4 +19,6 @@ public interface LancamentoImpl {
     void updateStatus(Lancamento lancamento, StatusLancamento statusLancamento);
 
     void validateLancamento(Lancamento lancamento);
+
+    Optional<Lancamento> obterPorId(Long id);
 }
