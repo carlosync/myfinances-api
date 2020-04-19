@@ -38,6 +38,7 @@ public class LancamentoResource {
     }
 
     @PutMapping("{id}")
+    @ApiOperation(value = "Recurso para atualizar o lancamento")
     public ResponseEntity update(@PathVariable Long id, @RequestBody Lancamento lancamento) {
         return lancamentoService.obterPorId(id).map(entity -> {
             try {
@@ -52,6 +53,7 @@ public class LancamentoResource {
     }
 
     @DeleteMapping("{id}")
+    @ApiOperation(value = "Recurso para deletar o lancamento")
     public ResponseEntity delete(@PathVariable Long id){
         return lancamentoService.obterPorId(id).map(entity ->{
             lancamentoService.delete(entity);
@@ -60,6 +62,7 @@ public class LancamentoResource {
     }
 
     @GetMapping
+    @ApiOperation(value = "Recurso para buscar lancamentos com filtros")
     public ResponseEntity search(
             @RequestParam(value = "descricao", required = false) String descricao,
             @RequestParam(value = "mes", required = false) Integer mes,
