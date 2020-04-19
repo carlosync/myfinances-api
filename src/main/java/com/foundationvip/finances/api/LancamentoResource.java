@@ -42,6 +42,13 @@ public class LancamentoResource {
                 return ResponseEntity.badRequest().body(e.getMessage());
             }
         }).orElseGet(() -> new ResponseEntity("Lançamento não encontrado", HttpStatus.BAD_REQUEST));
+    }
 
+    @DeleteMapping("{id}")
+    public ResponseEntity delete(@PathVariable Long id){
+        return lancamentoService.obterPorId(id).map(entity ->{
+            lancamentoService.delete(entity);
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }).orElseGet(() -> new ResponseEntity("Lançamento não encontrado", HttpStatus.BAD_REQUEST));
     }
 }
