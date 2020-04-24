@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -24,7 +25,7 @@ public class LancamentoService implements LancamentoImpl{
     @Override
     public Lancamento save(Lancamento lancamento) {
         validateLancamento(lancamento);
-        lancamento.setStatusLancamento(StatusLancamento.PENDENTE);
+        lancamento.setStatus(StatusLancamento.PENDENTE);
         return repository.save(lancamento);
     }
 
@@ -53,13 +54,13 @@ public class LancamentoService implements LancamentoImpl{
 
     @Override
     public void updateStatus(Lancamento lancamento, StatusLancamento statusLancamento) {
-        lancamento.setStatusLancamento(statusLancamento);
+        lancamento.setStatus(statusLancamento);
         update(lancamento);
     }
 
     @Override
     public void validateLancamento(Lancamento lancamento) {
-        if(StringUtils.hasText(lancamento.getDescricao())){
+        if(StringUtils.isEmpty(lancamento.getDescricao())){
             throw new RegraNegocioException("Informe uma Descrição válida.");
         }
         if(lancamento.getMes() == null || lancamento.getMes() < 1 || lancamento.getMes() > 12){
@@ -77,6 +78,7 @@ public class LancamentoService implements LancamentoImpl{
         if(lancamento.getTipo() == null){
             throw new RegraNegocioException("Informe um Tipo de lançamento");
         }
+        lancamento.setDataCadastro(LocalDate.now());
     }
 
     @Override
