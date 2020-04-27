@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,13 +32,13 @@ public class LancamentoResource {
     @Autowired
     private UsuarioService usuarioService;
 
-    @PostMapping
+    @PostMapping @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Recurso para salvar o lancamento")
-    public ResponseEntity save(@RequestBody LancamentoDTO lancamentoDTO) {
+    public ResponseEntity save(@Valid @RequestBody LancamentoDTO lancamentoDTO) {
         try {
             Lancamento lancamentoSalvo = converter(lancamentoDTO);
             lancamentoSalvo = lancamentoService.save(lancamentoSalvo);
-            return new ResponseEntity(lancamentoSalvo, HttpStatus.CREATED);
+            return ResponseEntity.ok(lancamentoSalvo);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

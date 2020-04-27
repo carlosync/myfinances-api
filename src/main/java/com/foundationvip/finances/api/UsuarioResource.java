@@ -21,12 +21,12 @@ public class UsuarioResource {
     @Autowired
     private UsuarioService service;
 
-    @PostMapping("/usuarios")
+    @PostMapping("/usuarios") @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Recurso para salvar o usuário")
     public ResponseEntity save(@RequestBody Usuario usuario){
         try {
             Usuario usuarioSalvo = service.save(usuario);
-            return new ResponseEntity(usuarioSalvo, HttpStatus.CREATED);
+            return ResponseEntity.ok(usuarioSalvo);
         }catch (RegraNegocioException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -8,12 +8,9 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "usuario", schema = "financas")
-@Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity @Table(name = "usuario", schema = "financas")
+@Data @Builder
+@NoArgsConstructor @AllArgsConstructor
 public class Usuario implements Serializable {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

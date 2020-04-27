@@ -7,16 +7,14 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "lancamento", schema = "financas")
-@Builder
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+@Entity @Table(name = "lancamento", schema = "financas")
+@Builder @Data
+@NoArgsConstructor @AllArgsConstructor
 public class Lancamento{
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
