@@ -32,8 +32,8 @@ public class LancamentoResource {
     @Autowired
     private UsuarioService usuarioService;
 
-    @PostMapping @ResponseStatus(HttpStatus.CREATED)
     @ApiOperation(value = "Recurso para salvar o lancamento")
+    @PostMapping @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity save(@Valid @RequestBody LancamentoDTO lancamentoDTO) {
         try {
             Lancamento lancamentoSalvo = converter(lancamentoDTO);
@@ -44,8 +44,8 @@ public class LancamentoResource {
         }
     }
 
-    @PutMapping("{id}")
     @ApiOperation(value = "Recurso para atualizar o lancamento")
+    @PutMapping("{id}")
     public ResponseEntity update(@PathVariable("id") Long id, @RequestBody LancamentoDTO lancamentoDTO) {
         return lancamentoService.obterPorId(id).map(entity -> {
             try {
@@ -59,8 +59,8 @@ public class LancamentoResource {
         }).orElseGet(() -> new ResponseEntity("Lançamento não encontrado", HttpStatus.BAD_REQUEST));
     }
 
-    @DeleteMapping("{id}")
     @ApiOperation(value = "Recurso para deletar o lancamento")
+    @DeleteMapping("{id}")
     public ResponseEntity delete(@PathVariable("id") Long id){
         return lancamentoService.obterPorId(id).map(entity ->{
             lancamentoService.delete(entity);
@@ -68,8 +68,8 @@ public class LancamentoResource {
         }).orElseGet(() -> new ResponseEntity("Lançamento não encontrado", HttpStatus.BAD_REQUEST));
     }
 
-    @GetMapping
     @ApiOperation(value = "Recurso para buscar lancamentos com filtros")
+    @GetMapping
     public ResponseEntity search(
             @RequestParam(value = "descricao", required = false) String descricao,
             @RequestParam(value = "mes", required = false) Integer mes,
@@ -93,12 +93,7 @@ public class LancamentoResource {
 
     private Lancamento converter(LancamentoDTO dto){
         Lancamento lancamento = new Lancamento();
-        lancamento.setId(dto.getId());
-        lancamento.setDescricao(dto.getDescricao());
-        lancamento.setMes(dto.getMes());
-        lancamento.setAno(dto.getAno());
-        lancamento.setValor(dto.getValor());
-
+        BeanUtils.copyProperties(dto, lancamento);
         Usuario usuario = usuarioService.obterPorId(dto.getUsuario())
                 .orElseThrow(() -> new RegraNegocioException("Usuário não encontrado"));
         lancamento.setUsuario(usuario);
