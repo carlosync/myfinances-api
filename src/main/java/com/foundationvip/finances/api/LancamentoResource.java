@@ -1,5 +1,6 @@
 package com.foundationvip.finances.api;
 
+import com.foundationvip.finances.dto.AtualizaStatusDTO;
 import com.foundationvip.finances.dto.LancamentoDTO;
 import com.foundationvip.finances.model.Lancamento;
 import com.foundationvip.finances.model.StatusLancamento;
@@ -65,6 +66,23 @@ public class LancamentoResource {
         return lancamentoService.obterPorId(id).map(entity ->{
             lancamentoService.delete(entity);
             return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }).orElseGet(() -> new ResponseEntity("Lançamento não encontrado", HttpStatus.BAD_REQUEST));
+    }
+
+    @PutMapping("{id}/atualiza-status")
+    public ResponseEntity updateStatus(@PathVariable("id") Long id, @RequestBody AtualizaStatusDTO dto){
+        return lancamentoService.obterPorId(id).map(entity ->{
+            StatusLancamento statusSelecionado  = StatusLancamento.valueOf(dto.getStatus());
+            if (statusSelecionado == null){
+                return ResponseEntity.badRequest().body("Não foi possível atualizar Status");
+            }
+            try{
+                entity.setStatus(statusSelecionado);
+                lancamentoService.update(entity);
+                return ResponseEntity.ok(entity);
+            }catch (RegraNegocioException e) {
+                return ResponseEntity.badRequest().body(e.getMessage());
+            }
         }).orElseGet(() -> new ResponseEntity("Lançamento não encontrado", HttpStatus.BAD_REQUEST));
     }
 
